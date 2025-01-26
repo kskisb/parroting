@@ -88,6 +88,10 @@ GEM
     debug (1.10.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    dotenv (3.1.7)
+    dotenv-rails (3.1.7)
+      dotenv (= 3.1.7)
+      railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.1)
     globalid (1.2.1)
@@ -101,6 +105,7 @@ GEM
       reline (>= 0.4.2)
     json (2.9.1)
     language_server-protocol (3.17.0.3)
+    line-bot-api (1.29.1)
     logger (1.6.5)
     loofah (2.24.0)
       crass (~> 1.0.2)
@@ -266,6 +271,8 @@ DEPENDENCIES
   bootsnap
   brakeman
   debug
+  dotenv-rails
+  line-bot-api
   puma (>= 5.0)
   rails (~> 7.2.1, >= 7.2.1.2)
   rubocop-rails-omakase
