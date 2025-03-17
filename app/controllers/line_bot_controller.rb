@@ -1,4 +1,8 @@
 class LineBotController < ApplicationController
+  def health
+    render json: { status: 'ok' }, status: :ok
+  end
+
   def callback
     body = request.body.read
     events = client.parse_events_from(body)
@@ -33,8 +37,6 @@ class LineBotController < ApplicationController
     lng = event.message['longitude']
     reply_msg = getRestInfo(lat, lng)
 
-    puts "Reply message: #{reply_msg.inspect}"
-
     message = {
       type: "template",
       altText: "レストラン一覧",
@@ -47,22 +49,6 @@ class LineBotController < ApplicationController
     }
 
     response = client.reply_message(event['replyToken'], message)
-    puts "LINE API Response: #{response.inspect}"
-  end
-
-  def getURL(place_id)
-    apikey = ENV["GOOGLE_MAPS_API_KEY"]
-    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=#{place_id}&fields=url&key=#{apikey}"
-
-    # http GET リクエストを送信
-    uri = URI(url)
-    response = Net::HTTP.get(uri)
-
-    # JSONデコード
-    result = JSON.parse(response)
-
-    # URLを検出
-    return result["status"] == "OK" ? result["result"]["url"] : nil
   end
 
   def getRestInfo(lat, lng)
@@ -71,7 +57,6 @@ class LineBotController < ApplicationController
 
     uri = URI(url)
     response = Net::HTTP.get(uri)
-    puts "Response: #{response}"
 
     data = JSON.parse(response)
 
@@ -105,5 +90,20 @@ class LineBotController < ApplicationController
       columns << column
     end
     columns
+  end
+
+  def getURL(place_id)
+    apikey = ENV["GOOGLE_MAPS_API_KEY"]
+    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=#{place_id}&fields=url&key=#{apikey}"
+
+    # http GET リクエストを送信
+    uri = URI(url)
+    response = Net::HTTP.get(uri)
+
+    # JSONデコード
+    result = JSON.parse(response)
+
+    # URLを検出
+    return result["status"] == "OK" ? result["result"]["url"] : nil
   end
 end
