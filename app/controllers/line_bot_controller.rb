@@ -1,6 +1,6 @@
 class LineBotController < ApplicationController
   def health
-    render json: { status: 'ok' }, status: :ok
+    render json: { status: "ok" }, status: :ok
   end
 
   def callback
@@ -17,7 +17,7 @@ class LineBotController < ApplicationController
             type: "text",
             text: "左側の＋ボタンからレストランを検索したい場所の位置情報を送信してください。"
           }
-          client.reply_message(event['replyToken'], message)
+          client.reply_message(event["replyToken"], message)
         end
       end
     end
@@ -33,8 +33,8 @@ class LineBotController < ApplicationController
   end
 
   def sendRestInfo(client, event)
-    lat = event.message['latitude']
-    lng = event.message['longitude']
+    lat = event.message["latitude"]
+    lng = event.message["longitude"]
     reply_msg = getRestInfo(lat, lng)
 
     message = {
@@ -48,7 +48,7 @@ class LineBotController < ApplicationController
       }
     }
 
-    response = client.reply_message(event['replyToken'], message)
+    response = client.reply_message(event["replyToken"], message)
   end
 
   def getRestInfo(lat, lng)
@@ -104,6 +104,6 @@ class LineBotController < ApplicationController
     result = JSON.parse(response)
 
     # URLを検出
-    return result["status"] == "OK" ? result["result"]["url"] : nil
+    result["status"] == "OK" ? result["result"]["url"] : nil
   end
 end
